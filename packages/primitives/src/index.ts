@@ -28,5 +28,5 @@ export * as Toggle from "./toggle";
 export * as ToggleGroup from "./toggle-group";
 export * as Toolbar from "./toolbar";
 export * as Tooltip from "./tooltip";
-export * as Types from "./types";
+export * from "./types";
 export * as Utils from "./utils";

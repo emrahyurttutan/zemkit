@@ -23,7 +23,7 @@ import {
   BottomSheetView,
 } from "./bottom-sheet/bottom-sheet";
 import { Calendar } from "./calendar";
-import { Combobox, ComboboxOption } from "./combobox";
+// import { Combobox, ComboboxOption } from "./combobox";
 import { Button, buttonTextVariants } from "./button";
 import { Checkbox } from "./checkbox";
 import { Input } from "./input";
@@ -34,6 +34,7 @@ import { Switch } from "./switch";
 import { Textarea } from "./textarea";
 import { Text } from "./text";
 import { cn } from "../../lib/utils";
+import { Insets } from "../../types";
 
 const Form = FormProvider;
 
@@ -191,6 +192,14 @@ type FormItemProps<T extends React.ElementType<any>, U> = Override<
   description?: string;
 };
 
+type FormItemInsetsProps<T extends React.ElementType<any>, U> = Override<
+  React.ComponentPropsWithoutRef<T>,
+  FormFieldFieldProps<U>
+> & {
+  label?: string;
+  description?: string;
+  insets: Insets;
+};
 const FormInput = React.forwardRef<
   React.ElementRef<typeof Input>,
   FormItemProps<typeof Input, string>
@@ -366,7 +375,7 @@ FormCheckbox.displayName = "FormCheckbox";
 
 const FormDatePicker = React.forwardRef<
   React.ElementRef<typeof Button>,
-  FormItemProps<typeof Calendar, string>
+  FormItemInsetsProps<typeof Calendar, string>
 >(({ label, description, value, onChange, ...props }, ref) => {
   const {
     error,
@@ -432,7 +441,11 @@ const FormDatePicker = React.forwardRef<
           </Button>
         </BottomSheetOpenTrigger>
         <BottomSheetContent>
-          <BottomSheetView hadHeader={false} className="pt-2">
+          <BottomSheetView
+            hadHeader={false}
+            className="pt-2"
+            insets={props.insets}
+          >
             <Calendar
               style={{ height: 358 }}
               onDayPress={(day) => {
@@ -504,41 +517,41 @@ const FormRadioGroup = React.forwardRef<
 
 FormRadioGroup.displayName = "FormRadioGroup";
 
-const FormCombobox = React.forwardRef<
-  React.ElementRef<typeof Combobox>,
-  FormItemProps<typeof Combobox, ComboboxOption | null>
->(({ label, description, value, onChange, ...props }, ref) => {
-  const {
-    error,
-    formItemNativeID,
-    formDescriptionNativeID,
-    formMessageNativeID,
-  } = useFormField();
+// const FormCombobox = React.forwardRef<
+//   React.ElementRef<typeof Combobox>,
+//   FormItemProps<typeof Combobox, ComboboxOption | null>
+// >(({ label, description, value, onChange, ...props }, ref) => {
+//   const {
+//     error,
+//     formItemNativeID,
+//     formDescriptionNativeID,
+//     formMessageNativeID,
+//   } = useFormField();
 
-  return (
-    <FormItem>
-      {!!label && <FormLabel nativeID={formItemNativeID}>{label}</FormLabel>}
-      <Combobox
-        ref={ref}
-        placeholder="Select framework"
-        aria-labelledby={formItemNativeID}
-        aria-describedby={
-          !error
-            ? `${formDescriptionNativeID}`
-            : `${formDescriptionNativeID} ${formMessageNativeID}`
-        }
-        aria-invalid={!!error}
-        selectedItem={value}
-        onSelectedItemChange={onChange}
-        {...props}
-      />
-      {!!description && <FormDescription>{description}</FormDescription>}
-      <FormMessage />
-    </FormItem>
-  );
-});
+//   return (
+//     <FormItem>
+//       {!!label && <FormLabel nativeID={formItemNativeID}>{label}</FormLabel>}
+//       <Combobox
+//         ref={ref}
+//         placeholder="Select framework"
+//         aria-labelledby={formItemNativeID}
+//         aria-describedby={
+//           !error
+//             ? `${formDescriptionNativeID}`
+//             : `${formDescriptionNativeID} ${formMessageNativeID}`
+//         }
+//         aria-invalid={!!error}
+//         selectedItem={value}
+//         onSelectedItemChange={onChange}
+//         {...props}
+//       />
+//       {!!description && <FormDescription>{description}</FormDescription>}
+//       <FormMessage />
+//     </FormItem>
+//   );
+// });
 
-FormCombobox.displayName = "FormCombobox";
+// FormCombobox.displayName = "FormCombobox";
 
 /**
  * @prop {children} 
@@ -667,7 +680,7 @@ FormSwitch.displayName = "FormSwitch";
 export {
   Form,
   FormCheckbox,
-  FormCombobox,
+  // FormCombobox,
   FormDatePicker,
   FormDescription,
   FormField,

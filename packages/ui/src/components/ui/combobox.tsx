@@ -1,7 +1,6 @@
 import { Check, ChevronsUpDown, Search } from "../Icons";
 import * as React from "react";
 import { ListRenderItemInfo, Text, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   BottomSheet,
   BottomSheetContent,
@@ -24,6 +23,13 @@ interface ComboboxOption {
   value?: string;
 }
 
+interface Insets {
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+}
+
 const Combobox = React.forwardRef<
   React.ElementRef<typeof Button>,
   Omit<React.ComponentPropsWithoutRef<typeof Button>, "children"> & {
@@ -34,6 +40,7 @@ const Combobox = React.forwardRef<
     defaultSelectedItem?: ComboboxOption | null;
     selectedItem?: ComboboxOption | null;
     onSelectedItemChange?: (option: ComboboxOption | null) => void;
+    insets?: Insets;
   }
 >(
   (
@@ -48,11 +55,11 @@ const Combobox = React.forwardRef<
       defaultSelectedItem = null,
       selectedItem: selectedItemProp,
       onSelectedItemChange,
+      insets,
       ...props
     },
     ref
   ) => {
-    const insets = useSafeAreaInsets();
     const [search, setSearch] = React.useState("");
     const [selectedItem, setSelectedItem] =
       React.useState<ComboboxOption | null>(defaultSelectedItem);
@@ -194,8 +201,9 @@ const Combobox = React.forwardRef<
           </View>
           <BottomSheetFlatList
             data={listItems}
+            insets={insets}
             contentContainerStyle={{
-              paddingBottom: insets.bottom + HEADER_HEIGHT,
+              paddingBottom: (insets?.bottom || 0) + HEADER_HEIGHT,
             }}
             renderItem={renderItem}
             keyExtractor={(item, index) =>

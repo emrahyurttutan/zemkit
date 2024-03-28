@@ -16,7 +16,6 @@ import {
   ScrollView,
 } from "react-native";
 import Animated, { FadeInUp, FadeOutUp } from "react-native-reanimated";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   Table,
   TableBody,
@@ -26,6 +25,7 @@ import {
   TableRow,
 } from "./table";
 import { cn } from "../../lib/utils";
+import { Insets } from "../../types";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -36,6 +36,7 @@ interface DataTableProps<TData, TValue> {
   ListFooterComponent?: FlashListProps<TData>["ListFooterComponent"];
   isRefreshing?: boolean;
   onRefresh?: () => void;
+  insets?: Insets;
 }
 
 /**
@@ -51,8 +52,8 @@ export function DataTable<TData, TValue>({
   ListFooterComponent,
   isRefreshing = false,
   onRefresh,
+  insets,
 }: DataTableProps<TData, TValue>) {
-  const insets = useSafeAreaInsets();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const table = useReactTable({
     data,
@@ -113,7 +114,7 @@ export function DataTable<TData, TValue>({
               ListFooterComponent={ListFooterComponent}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{
-                paddingBottom: insets.bottom,
+                paddingBottom: insets?.bottom,
               }}
               refreshControl={
                 <RefreshControl

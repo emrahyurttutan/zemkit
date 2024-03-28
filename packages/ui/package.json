@@ -2,17 +2,14 @@
   "name": "zemkit-ui",
   "description": "React Native Zemkit",
   "license": "MIT",
-  "exports": {
-    ".": "./src/index.ts"
-  },
   "scripts": {
     "clean": "rm -rf node_modules dist .turbo",
     "generate:component": "turbo gen react-component",
-    "build": "tsup",
-    "dev": "tsup --watch"
+    "prepare": "bob build",
+    "build": "bob build"
   },
   "type": "module",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "dependencies": {
     "@gorhom/bottom-sheet": "^4.6.0",
     "@hookform/resolvers": "^3.3.4",
@@ -32,14 +29,14 @@
     "react-native-svg": "14.1.0",
     "react-native-toast-message": "^2.2.0",
     "tailwind-merge": "^2.1.0",
-    "zemkit-primitives": "*",
-    "tsup": "^8.0.1"
+    "zemkit-primitives": "*"
   },
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.1",
     "@types/react": "~18.2.43",
     "react": "18.2.0",
-    "react-native": "0.73.4"
+    "react-native": "0.73.4",
+    "react-native-builder-bob": "^0.23.2"
   },
   "peerDependencies": {
     "react": "*",
@@ -53,5 +50,30 @@
     "react-native-web": {
       "optional": true
     }
-  }
+  },
+  "main": "lib/commonjs/index.js",
+  "react-native": "src/index.ts",
+  "source": "src/index.ts",
+  "module": "lib/module/index.js",
+  "types": "lib/typescript/src/index.d.ts",
+  "files": [
+    "src",
+    "lib",
+    "!**/__tests__",
+    "!**/__fixtures__",
+    "!**/__mocks__"
+  ],
+  "react-native-builder-bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      "commonjs",
+      "module",
+      "typescript"
+    ]
+  },
+  "eslintIgnore": [
+    "node_modules/",
+    "lib/"
+  ]
 }

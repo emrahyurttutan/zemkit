@@ -1,6 +1,6 @@
 {
   "extends": "@tsconfig/recommended/tsconfig.json",
-  "include": ["*.ts","src"],
+  "include": ["*.ts", "src"],
   "exclude": ["node_modules"],
   "compilerOptions": {
     "target": "ESNext",
@@ -17,7 +17,6 @@
     "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": false,
-    "noEmit": true,
     "noEmitOnError": true,
     "jsx": "react-jsx",
     "declaration": true,

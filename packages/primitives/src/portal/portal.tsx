@@ -52,7 +52,7 @@ export function Portal({
   name: string;
   hostName?: string;
   children: React.ReactNode;
-}) {
+}): any {
   React.useEffect(() => {
     updatePortal(hostName, name, children);
   }, [hostName, name, children]);

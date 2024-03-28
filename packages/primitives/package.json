@@ -1,16 +1,13 @@
 {
   "name": "zemkit-primitives",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "zemkit primitives",
   "license": "MIT",
   "type": "module",
-  "exports": {
-    ".": "./src/index.ts"
-  },
   "scripts": {
     "clean": "rm -rf node_modules dist .turbo",
-    "build": "NODE_OPTIONS='--max-old-space-size=16384' tsup",
-    "dev": "NODE_OPTIONS='--max-old-space-size=16384' tsup --watch"
+    "prepare": "bob build",
+    "build": "bob build"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.1.2",
@@ -35,14 +32,14 @@
     "@radix-ui/react-toggle-group": "^1.0.4",
     "@radix-ui/react-toolbar": "^1.0.4",
     "@radix-ui/react-tooltip": "^1.0.7",
-    "tsup": "^8.0.1",
     "zustand": "^4.4.7"
   },
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.1",
     "@types/react": "~18.2.43",
     "react": "18.2.0",
-    "react-native": "0.73.4"
+    "react-native": "0.73.4",
+    "react-native-builder-bob": "^0.23.2"
   },
   "peerDependencies": {
     "react": "*",
@@ -56,5 +53,30 @@
     "react-native-web": {
       "optional": true
     }
-  }
+  },
+  "main": "lib/commonjs/index.js",
+  "react-native": "src/index.ts",
+  "source": "src/index.ts",
+  "module": "lib/module/index.js",
+  "types": "lib/typescript/src/index.d.ts",
+  "files": [
+    "src",
+    "lib",
+    "!**/__tests__",
+    "!**/__fixtures__",
+    "!**/__mocks__"
+  ],
+  "react-native-builder-bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      "commonjs",
+      "module",
+      "typescript"
+    ]
+  },
+  "eslintIgnore": [
+    "node_modules/",
+    "lib/"
+  ]
 }

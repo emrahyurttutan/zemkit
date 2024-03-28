@@ -51,7 +51,7 @@ const ToggleGroupItem = React.forwardRef<
     <TextClassContext.Provider
       value={cn(
         toggleTextVariants({ variant, size }),
-        ToggleGroupPrimitive.utils.getIsSelected(value, props.value)
+        ToggleGroupPrimitive.utils.getIsSelected(value as any, props.value)
           ? "text-accent-foreground"
           : "web:group-hover:text-muted-foreground"
       )}
@@ -64,7 +64,7 @@ const ToggleGroupItem = React.forwardRef<
             size: context.size || size,
           }),
           props.disabled && "web:pointer-events-none opacity-50",
-          ToggleGroupPrimitive.utils.getIsSelected(value, props.value) &&
+          ToggleGroupPrimitive.utils.getIsSelected(value as any, props.value) &&
             "bg-accent",
           className
         )}

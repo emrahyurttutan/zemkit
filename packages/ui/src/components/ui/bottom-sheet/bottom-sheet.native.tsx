@@ -21,12 +21,12 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { X } from "../../Icons";
 import { Button } from "../button";
 import { Slot } from "zemkit-primitives";
 import { useColorScheme } from "../../../lib/useColorScheme";
 import { cn } from "../../../lib/utils";
+import { Insets } from "../../../types";
 
 // TODO: refactor and move to UI
 // TODO: create web component, use https://ui.shadcn.com/docs/components/drawer
@@ -73,6 +73,7 @@ type BottomSheetContentProps = Omit<
   backdropProps?: Partial<
     React.ComponentPropsWithoutRef<typeof BottomSheetBackdrop>
   >;
+  insets?: Insets;
 };
 
 const BottomSheetContent = React.forwardRef<
@@ -87,11 +88,11 @@ const BottomSheetContent = React.forwardRef<
       backdropProps,
       backgroundStyle,
       android_keyboardInputMode = "adjustResize",
+      insets,
       ...props
     },
     ref
   ) => {
-    const insets = useSafeAreaInsets();
     const { isDarkColorScheme } = useColorScheme();
     const { colors } = useTheme();
     const { sheetRef } = useBottomSheetContext();
@@ -150,7 +151,7 @@ const BottomSheetContent = React.forwardRef<
         handleIndicatorStyle={{
           backgroundColor: colors.text,
         }}
-        topInset={insets.top}
+        topInset={insets?.top}
         android_keyboardInputMode={android_keyboardInputMode}
         {...props}
       />
@@ -199,6 +200,7 @@ type BottomSheetViewProps = Omit<
 > & {
   hadHeader?: boolean;
   style?: ViewStyle;
+  insets: Insets;
 };
 
 function BottomSheetView({
@@ -206,15 +208,15 @@ function BottomSheetView({
   children,
   hadHeader = true,
   style,
+  insets,
   ...props
 }: BottomSheetViewProps) {
-  const insets = useSafeAreaInsets();
   return (
     <GBottomSheetView
       style={[
         {
           paddingBottom:
-            insets.bottom + (hadHeader ? BOTTOM_SHEET_HEADER_HEIGHT : 0),
+            (insets.bottom || 0) + (hadHeader ? BOTTOM_SHEET_HEADER_HEIGHT : 0),
         },
         style,
       ]}
@@ -250,12 +252,11 @@ const BottomSheetTextInput = React.forwardRef<
 type BottomSheetFlatListRef = React.ElementRef<typeof GBottomSheetFlatList>;
 type BottomSheetFlatListProps = React.ComponentPropsWithoutRef<
   typeof GBottomSheetFlatList
->;
+> & { insets: Insets };
 const BottomSheetFlatList = React.forwardRef<
   BottomSheetFlatListRef,
   BottomSheetFlatListProps
->(({ className, ...props }, ref) => {
-  const insets = useSafeAreaInsets();
+>(({ className, insets, ...props }, ref) => {
   return (
     <GBottomSheetFlatList
       ref={ref}
@@ -305,6 +306,7 @@ type BottomSheetFooterProps = Omit<
   bottomSheetFooterProps: GBottomSheetFooterProps;
   children?: React.ReactNode;
   style?: ViewStyle;
+  insets: Insets;
 };
 
 /**
@@ -313,21 +315,25 @@ type BottomSheetFooterProps = Omit<
 const BottomSheetFooter = React.forwardRef<
   BottomSheetFooterRef,
   BottomSheetFooterProps
->(({ bottomSheetFooterProps, children, className, style, ...props }, ref) => {
-  const insets = useSafeAreaInsets();
-  return (
-    <GBottomSheetFooter {...bottomSheetFooterProps}>
-      <View
-        ref={ref}
-        style={[{ paddingBottom: insets.bottom + 6 }, style]}
-        className={cn("px-4 pt-1.5", className)}
-        {...props}
-      >
-        {children}
-      </View>
-    </GBottomSheetFooter>
-  );
-});
+>(
+  (
+    { bottomSheetFooterProps, children, className, insets, style, ...props },
+    ref
+  ) => {
+    return (
+      <GBottomSheetFooter {...bottomSheetFooterProps}>
+        <View
+          ref={ref}
+          style={[{ paddingBottom: (insets.bottom || 0) + 6 }, style]}
+          className={cn("px-4 pt-1.5", className)}
+          {...props}
+        >
+          {children}
+        </View>
+      </GBottomSheetFooter>
+    );
+  }
+);
 
 function useBottomSheet() {
   const ref = React.useRef<BottomSheetContentRef>(null);
